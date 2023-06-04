@@ -79,7 +79,7 @@ def popup(parent, title, details, icon, *, buttons):
         button_frame.columnconfigure(index, weight=1)
 
     dialog.overrideredirect(True)
-    dialog.update()
+    dialog.update_idletasks()
 
     dialog_width = dialog.winfo_width()
     dialog_height = dialog.winfo_height()
@@ -102,6 +102,7 @@ def popup(parent, title, details, icon, *, buttons):
     dialog.minsize(320, dialog_height)
 
     dialog.transient(parent)
+    dialog.wm_attributes("-type", "dialog")
     dialog.grab_set()
 
     dialog.wait_window()
