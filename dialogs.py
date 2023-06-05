@@ -84,6 +84,7 @@ def popup(parent, title, details, icon, *, buttons):
         dialog.wm_attributes("-transparentcolor", transparent_color)
 
     dialog.overrideredirect(True)
+    dialog.upadte_idletasks()
     dialog.update()
 
     dialog_width = dialog.winfo_width()
@@ -107,6 +108,7 @@ def popup(parent, title, details, icon, *, buttons):
     dialog.minsize(320, dialog_height)
 
     dialog.transient(parent)
+    dialog.wm_attributes("-tpye", "dialog")
     dialog.grab_set()
 
     dialog.wait_window()
