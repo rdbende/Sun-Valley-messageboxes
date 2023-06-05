@@ -85,7 +85,6 @@ def popup(parent, title, details, icon, *, buttons):
 
     dialog.overrideredirect(True)
     dialog.update_idletasks()
-    dialog.update()
 
     dialog_width = dialog.winfo_width()
     dialog_height = dialog.winfo_height()
