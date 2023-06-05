@@ -1,3 +1,4 @@
+import sys
 import tkinter as tk
 from tkinter import ttk
 from functools import partial
@@ -77,9 +78,13 @@ def popup(parent, title, details, icon, *, buttons):
         button.grid(row=0, column=index, sticky=sticky, padx=(0, 10))
 
         button_frame.columnconfigure(index, weight=1)
+        
+    if sys.platform == "win32":
+        transparent_color = big_frame.tk.call("ttk::style", "lookup", "TFrame", "-background")
+        dialog.wm_attributes("-transparentcolor", transparent_color)
 
     dialog.overrideredirect(True)
-    dialog.update_idletasks()
+    dialog.update()
 
     dialog_width = dialog.winfo_width()
     dialog_height = dialog.winfo_height()
@@ -102,7 +107,6 @@ def popup(parent, title, details, icon, *, buttons):
     dialog.minsize(320, dialog_height)
 
     dialog.transient(parent)
-    dialog.wm_attributes("-type", "dialog")
     dialog.grab_set()
 
     dialog.wait_window()
