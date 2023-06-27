@@ -1,10 +1,10 @@
 import sys
 import tkinter as tk
-from tkinter import ttk
 from functools import partial
+from tkinter import ttk
 
 
-def popup(parent, title, details, icon, *, buttons):
+def popup(parent, title, details, icon, *, buttons, aboveparent, wait):
     dialog = tk.Toplevel()
 
     result = None
@@ -78,9 +78,11 @@ def popup(parent, title, details, icon, *, buttons):
         button.grid(row=0, column=index, sticky=sticky, padx=(0, 10))
 
         button_frame.columnconfigure(index, weight=1)
-        
+
     if sys.platform == "win32":
-        transparent_color = big_frame.tk.call("ttk::style", "lookup", "TFrame", "-background")
+        transparent_color = big_frame.tk.call(
+            "ttk::style", "lookup", "TFrame", "-background"
+        )
         dialog.wm_attributes("-transparentcolor", transparent_color)
 
     dialog.overrideredirect(True)
@@ -108,69 +110,130 @@ def popup(parent, title, details, icon, *, buttons):
 
     dialog.transient(parent)
     dialog.wm_attributes("-type", "dialog")
-    dialog.grab_set()
-
-    dialog.wait_window()
+    if aboveparent:
+        dialog.grab_set()
+    if wait:
+        dialog.wait_window()
     return result
 
 
-def show_message(title="Title", details="Description", *, parent=None, icon=None):
+def show_message(
+    title="Title",
+    details="Description",
+    *,
+    parent=None,
+    icon=None,
+    aboveparent=True,
+    wait=True
+):
     return popup(
         parent,
         title,
         details,
         icon,
         buttons=[("Ok", None, "default")],
+        aboveparent=aboveparent,
+        wait=wait,
     )
 
 
-def ask_ok_cancel(title="Title", details="Description", *, parent=None, icon=None):
+def ask_ok_cancel(
+    title="Title",
+    details="Description",
+    *,
+    parent=None,
+    icon=None,
+    aboveparent=True,
+    wait=True
+):
     return popup(
         parent,
         title,
         details,
         icon,
         buttons=[("Ok", True, "accent"), ("Cancel", None)],
+        aboveparent=aboveparent,
+        wait=wait,
     )
 
 
-def ask_yes_no(title="Title", details="Description", *, parent=None, icon=None):
+def ask_yes_no(
+    title="Title",
+    details="Description",
+    *,
+    parent=None,
+    icon=None,
+    aboveparent=True,
+    wait=True
+):
     return popup(
         parent,
         title,
         details,
         icon,
         buttons=[("Yes", True, "accent"), ("No", False)],
+        aboveparent=aboveparent,
+        wait=wait,
     )
 
 
-def ask_yes_no_cancel(title="Title", details="Description", *, parent=None, icon=None):
+def ask_yes_no_cancel(
+    title="Title",
+    details="Description",
+    *,
+    parent=None,
+    icon=None,
+    aboveparent=True,
+    wait=True
+):
     return popup(
         parent,
         title,
         details,
         icon,
         buttons=[("Yes", True, "accent"), ("No", False), ("Cancel", None)],
+        aboveparent=aboveparent,
+        wait=wait,
     )
 
 
-def ask_retry_cancel(title="Title", details="Description", *, parent=None, icon=None):
+def ask_retry_cancel(
+    title="Title",
+    details="Description",
+    *,
+    parent=None,
+    icon=None,
+    aboveparent=True,
+    wait=True
+):
     return popup(
         parent,
         title,
         details,
         icon,
         buttons=[("Retry", True, "accent"), ("Cancel", None)],
+        aboveparent=aboveparent,
+        wait=wait,
     )
 
 
-def ask_allow_block(title="Title", details="Description", *, parent=None, icon=None):
+def ask_allow_block(
+    title="Title",
+    details="Description",
+    *,
+    parent=None,
+    icon=None,
+    aboveparent=True,
+    wait=True
+):
     return popup(
         parent,
         title,
         details,
         icon,
         buttons=[("Allow", True, "accent"), ("Block", False)],
+        aboveparent=aboveparent,
+        wait=wait,
     )
 
 
@@ -182,6 +245,8 @@ if __name__ == "__main__":
 
     window.geometry("600x600")
 
-    show_message("No WiFi connection", "Check your connection and try again.")
+    show_message(
+        "No WiFi connection", "Check your connection and try again.", wait=False
+    )
 
     window.mainloop()
