@@ -108,8 +108,8 @@ def popup(parent, title, details, icon, *, buttons, aboveparent, wait):
             "ttk::style", "lookup", "TFrame", "-background"
         )
         dialog.wm_attributes("-transparentcolor", transparent_color)
-	else: # Doesn't work on windows
-		dialog.wm_attributes("-type", "dialog")
+    else: # Doesn't work on windows
+        dialog.wm_attributes("-type", "dialog")
 
     if aboveparent:
         dialog.grab_set()
