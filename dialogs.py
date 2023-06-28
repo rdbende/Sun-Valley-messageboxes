@@ -79,12 +79,6 @@ def popup(parent, title, details, icon, *, buttons, aboveparent, wait):
 
         button_frame.columnconfigure(index, weight=1)
 
-    if sys.platform == "win32":
-        transparent_color = big_frame.tk.call(
-            "ttk::style", "lookup", "TFrame", "-background"
-        )
-        dialog.wm_attributes("-transparentcolor", transparent_color)
-
     dialog.overrideredirect(True)
     dialog.update_idletasks()
 
@@ -109,7 +103,14 @@ def popup(parent, title, details, icon, *, buttons, aboveparent, wait):
     dialog.minsize(320, dialog_height)
 
     dialog.transient(parent)
-    dialog.wm_attributes("-type", "dialog")
+    if sys.platform == "win32": # If windows then transparentcolor
+        transparent_color = big_frame.tk.call(
+            "ttk::style", "lookup", "TFrame", "-background"
+        )
+        dialog.wm_attributes("-transparentcolor", transparent_color)
+	else: # Doesn't work on windows
+		dialog.wm_attributes("-type", "dialog")
+
     if aboveparent:
         dialog.grab_set()
     if wait:
